@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - FxTemporaire
+  - Target
   layers:
   - Default
   - TransparentFX

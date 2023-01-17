@@ -18,10 +18,11 @@ public class SimpleShoot : MonoBehaviour
     [Header("Prefab Refrences")]
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
-    public GameObject muzzleFlashPrefab;
+    
 
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
+    
     [SerializeField] private Transform barrelLocation;
     [SerializeField] private Transform casingExitLocation;
 
@@ -33,12 +34,15 @@ public class SimpleShoot : MonoBehaviour
 
     void Start()
     {
+        
         if (barrelLocation == null)
             barrelLocation = transform;
 
         if (gunAnimator == null)
             gunAnimator = GetComponentInChildren<Animator>();
+            
     }
+
 
     void Update()
     {
@@ -48,12 +52,13 @@ public class SimpleShoot : MonoBehaviour
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
             
+            
         }
         if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
-            Muzzle();
+            
         }
     }
 
@@ -61,8 +66,9 @@ public class SimpleShoot : MonoBehaviour
     //This function creates the bullet behavior
     void Shoot()
     {
+        muzzleflash.Play();
         
-        RaycastHit hit;
+            RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
             UnityEngine.Debug.Log(hit.transform.name);
@@ -77,26 +83,18 @@ public class SimpleShoot : MonoBehaviour
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
-
-            GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2f);
+            //Bullet impact for dog
+            if (hit.transform.name!="zombieDog"&& hit.transform.name != "FirstPersonPlayer")
+            { 
+                GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal)); 
+            }
+            
         }
 
 
 
     }
-    void Muzzle()
-    {
-        if (Input.GetButtonDown("Fire1"))
-            {
-            //Create the muzzle flash
-            GameObject tempFlash;
-            tempFlash = Instantiate(muzzleFlashPrefab, barrelLocation.position, barrelLocation.rotation);
-
-            //Destroy the muzzle flash effect
-            Destroy(tempFlash, destroyTimer);
-        }
-    }
+   
 
     //This function creates a casing at the ejection slot
     void CasingRelease()
