@@ -10,6 +10,11 @@ public class SimpleShoot : MonoBehaviour
     public float fireRate = 15f;
     public float impactForce = 30f;
 
+    public int maxAmmo = 10;
+    private int currentAmmo;
+    public float reloadTime = 1f;
+    private bool isReloading = false;
+
     public Camera fpscamera;
     public ParticleSystem muzzleflash;
     public GameObject impactEffect;
@@ -34,7 +39,7 @@ public class SimpleShoot : MonoBehaviour
 
     void Start()
     {
-        
+        currentAmmo = maxAmmo;
         if (barrelLocation == null)
             barrelLocation = transform;
 
@@ -46,15 +51,24 @@ public class SimpleShoot : MonoBehaviour
 
     void Update()
     {
+        if (isReloading)
+            return;
+        if (Input.GetKeyDown(KeyCode.R)&&currentAmmo <maxAmmo)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
         //If you want a different input, change it here
         if (Input.GetButtonDown("Fire1"))
         {
             //Calls animation on the gun that has the relevant animation events that will fire
+            if (currentAmmo == 0)
+                return;
             gunAnimator.SetTrigger("Fire");
             
             
         }
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire&&currentAmmo>0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
@@ -66,8 +80,10 @@ public class SimpleShoot : MonoBehaviour
     //This function creates the bullet behavior
     void Shoot()
     {
+        if (currentAmmo == 0)
+            return;
         muzzleflash.Play();
-        
+        currentAmmo--;
             RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
@@ -94,7 +110,17 @@ public class SimpleShoot : MonoBehaviour
 
 
     }
-   
+    
+   IEnumerator Reload()
+    {
+        isReloading = true;
+        Debug.Log("Reloading");
+        gunAnimator.SetBool("Reloading", true);
+        yield return new WaitForSeconds(reloadTime);
+        gunAnimator.SetBool("Reloading", false);
+        currentAmmo = maxAmmo;
+        isReloading = false;
+    }
 
     //This function creates a casing at the ejection slot
     void CasingRelease()
