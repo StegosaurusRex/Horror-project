@@ -23,11 +23,11 @@ public class SimpleShoot : MonoBehaviour
     [Header("Prefab Refrences")]
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
-    
+
 
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
-    
+
     [SerializeField] private Transform barrelLocation;
     [SerializeField] private Transform casingExitLocation;
 
@@ -45,7 +45,7 @@ public class SimpleShoot : MonoBehaviour
 
         if (gunAnimator == null)
             gunAnimator = GetComponentInChildren<Animator>();
-            
+
     }
 
 
@@ -53,7 +53,7 @@ public class SimpleShoot : MonoBehaviour
     {
         if (isReloading)
             return;
-        if (Input.GetKeyDown(KeyCode.R)&&currentAmmo <maxAmmo)
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
         {
             StartCoroutine(Reload());
             return;
@@ -65,14 +65,14 @@ public class SimpleShoot : MonoBehaviour
             if (currentAmmo == 0)
                 return;
             gunAnimator.SetTrigger("Fire");
-            
-            
+
+
         }
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire&&currentAmmo>0)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
-            
+
         }
     }
 
@@ -84,7 +84,7 @@ public class SimpleShoot : MonoBehaviour
             return;
         muzzleflash.Play();
         currentAmmo--;
-            RaycastHit hit;
+        RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
             UnityEngine.Debug.Log(hit.transform.name);
@@ -100,18 +100,18 @@ public class SimpleShoot : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
             //Bullet impact for dog
-            if (hit.transform.name!="zombieDog"&& hit.transform.name != "FirstPersonPlayer")
-            { 
-                GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal)); 
+            if (hit.transform.name != "zombieDog" && hit.transform.name != "FirstPersonPlayer"&& hit.transform.name != "OpenCloseDoorTrigger")
+            {
+                GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             }
-            
+
         }
 
 
 
     }
-    
-   IEnumerator Reload()
+
+    IEnumerator Reload()
     {
         isReloading = true;
         Debug.Log("Reloading");
@@ -140,7 +140,7 @@ public class SimpleShoot : MonoBehaviour
         //Destroy casing after X seconds
         Destroy(tempCasing, destroyTimer);
 
-        
+
     }
 
 }

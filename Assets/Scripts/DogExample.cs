@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 public enum AIStatsKind { idle,Active,Chaseing}
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -63,8 +64,8 @@ public class DogExample : MonoBehaviour
                 float distance = Vector3.Distance(target.position, transform.position);
                 if (distance <=stopRadis)
                 {
-                    // this is where you wolud kill the player 
-                
+                    SceneManager.LoadScene(2);
+
                 }
             }
         }

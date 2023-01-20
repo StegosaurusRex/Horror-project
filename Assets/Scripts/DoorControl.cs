@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class DoorControl : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Animator myDoor;
+    
+    private void Start()
     {
+        myDoor = this.transform.parent.GetComponent<Animator>();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        myDoor.SetBool("Open", true);
+
         
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit(Collider other)
     {
-        
+        myDoor.SetBool("Close", true);
     }
 }
