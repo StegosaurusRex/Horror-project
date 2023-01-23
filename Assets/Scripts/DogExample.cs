@@ -17,6 +17,7 @@ public class DogExample : MonoBehaviour
     private NavMeshAgent enemy;
     public Animator DogAni;
     private AIStatsKind _AIStats;
+    public AudioSource awakeDogSound;
      public bool isChaseing;
     private void OnDrawGizmos()
     {
@@ -32,7 +33,7 @@ public class DogExample : MonoBehaviour
     }
     void Start()
     {
-        
+        awakeDogSound = GetComponent<AudioSource>();
         enemy = GetComponent<NavMeshAgent>();
     }
 
@@ -56,6 +57,7 @@ public class DogExample : MonoBehaviour
 
         if (_AIStats == AIStatsKind.Chaseing)
         {
+            
             enemy.SetDestination(target.position);
             DogAni.SetFloat("speed", enemy.velocity.magnitude);
             Debug.Log(enemy.velocity.magnitude);
@@ -83,6 +85,7 @@ public class DogExample : MonoBehaviour
 
     void _ChasePlayer()
     {
+        awakeDogSound.Play();
         DogAni.SetFloat("speed",1); 
         _AIStats = AIStatsKind.Chaseing;
         enemy.speed = MaxSpeed;

@@ -18,6 +18,10 @@ public class SimpleShoot : MonoBehaviour
     public Camera fpscamera;
     public ParticleSystem muzzleflash;
     public GameObject impactEffect;
+    AudioSource shootSound;
+    AudioSource reloadSound;
+    public AudioClip shot;
+    public AudioClip reload;
 
     [SerializeField] private float nextTimeToFire = 0f;
     [Header("Prefab Refrences")]
@@ -39,6 +43,8 @@ public class SimpleShoot : MonoBehaviour
 
     void Start()
     {
+        shootSound = gameObject.GetComponent<AudioSource>();
+        reloadSound = gameObject.GetComponent<AudioSource>();
         currentAmmo = maxAmmo;
         if (barrelLocation == null)
             barrelLocation = transform;
@@ -51,7 +57,7 @@ public class SimpleShoot : MonoBehaviour
 
     void Update()
     {
-        if (isReloading)
+        if (isReloading||GameManager.GameIsPaused==true)
             return;
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
         {
@@ -68,7 +74,7 @@ public class SimpleShoot : MonoBehaviour
 
 
         }
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0&&GameManager.GameIsPaused==false)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
@@ -83,6 +89,7 @@ public class SimpleShoot : MonoBehaviour
         if (currentAmmo == 0)
             return;
         muzzleflash.Play();
+        shootSound.PlayOneShot(shot, 0.7F);
         currentAmmo--;
         RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
@@ -115,8 +122,11 @@ public class SimpleShoot : MonoBehaviour
     {
         isReloading = true;
         Debug.Log("Reloading");
+        
         gunAnimator.SetBool("Reloading", true);
+        
         yield return new WaitForSeconds(reloadTime);
+        shootSound.PlayOneShot(reload, 0.7F);
         gunAnimator.SetBool("Reloading", false);
         currentAmmo = maxAmmo;
         isReloading = false;
