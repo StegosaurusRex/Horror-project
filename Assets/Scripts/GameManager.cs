@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     
     public static bool GameIsPaused=false;
     public GameObject pauseMenuUI;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
+        
         Time.timeScale = 0f;
         GameIsPaused = true;
         
