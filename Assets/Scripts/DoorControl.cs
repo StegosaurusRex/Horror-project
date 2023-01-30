@@ -20,7 +20,14 @@ public class DoorControl : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         closeSound.PlayOneShot(closeDoor, 1F);
-
+        
+        // Code to execute after the delay
+    }
+    IEnumerator ExecuteAfterTimeCollision(float time)
+    {
+        yield return new WaitForSeconds(time);
+        
+        Destroy(gameObject);
         // Code to execute after the delay
     }
     private void OnTriggerEnter(Collider other)
@@ -33,6 +40,8 @@ public class DoorControl : MonoBehaviour
     {
         myDoor.SetBool("Close", true);
         StartCoroutine(ExecuteAfterTime(1));
+        StartCoroutine(ExecuteAfterTimeCollision(1.6f));
+        
 
     }
 }

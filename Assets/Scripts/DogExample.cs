@@ -19,6 +19,7 @@ public class DogExample : MonoBehaviour
     private AIStatsKind _AIStats;
     public AudioSource awakeDogSound;
      public bool isChaseing;
+    GameManager pause;
     private void OnDrawGizmos()
     {
  
@@ -33,6 +34,8 @@ public class DogExample : MonoBehaviour
     }
     void Start()
     {
+
+        pause = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         awakeDogSound = GetComponent<AudioSource>();
         enemy = GetComponent<NavMeshAgent>();
     }
@@ -66,7 +69,7 @@ public class DogExample : MonoBehaviour
                 float distance = Vector3.Distance(target.position, transform.position);
                 if (distance <=stopRadis)
                 {
-                    SceneManager.LoadScene(2);
+                    pause.PauseGameOver();
 
                 }
             }

@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     
     public static bool GameIsPaused=false;
     public GameObject pauseMenuUI;
+    public GameObject pauseMenuUIGameOver;
+    public GameObject pauseMenuUIWinGame;
 
     void Update()
     {
@@ -35,6 +37,24 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
+        
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+        
+
+    }
+    public void PauseGameOver()
+    {
+        pauseMenuUIGameOver.SetActive(true);
+        
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+        
+
+    }
+    public void PauseWinGame()
+    {
+        pauseMenuUIWinGame.SetActive(true);
         
         Time.timeScale = 0f;
         GameIsPaused = true;

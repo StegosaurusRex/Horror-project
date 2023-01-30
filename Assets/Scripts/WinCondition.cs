@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class WinCondition : MonoBehaviour
 {
+    GameManager pause;
+    private void Start()
+    {
+        pause = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
-        
-        SceneManager.LoadScene(3);
+
+        pause.PauseWinGame();
 
 
     }
