@@ -8,6 +8,7 @@ TagManager:
   - FxTemporaire
   - Target
   - GameManager
+  - Trigger
   layers:
   - Default
   - TransparentFX

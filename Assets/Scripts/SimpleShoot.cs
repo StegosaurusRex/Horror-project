@@ -107,7 +107,7 @@ public class SimpleShoot : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
             //Bullet impact for dog
-            if (hit.transform.name != "zombieDog" && hit.transform.name != "FirstPersonPlayer"&& hit.transform.name != "OpenCloseDoorTrigger")
+            if (hit.transform.tag != "Target" && hit.transform.tag != "Player"&&hit.transform.tag!="Trigger")
             {
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             }

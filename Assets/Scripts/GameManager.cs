@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     
     public static bool GameIsPaused=false;
     public GameObject pauseMenuUI;
+    public GameObject pauseMenuUIOptions;
     public GameObject pauseMenuUIGameOver;
     public GameObject pauseMenuUIWinGame;
 
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        pauseMenuUIOptions.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
         

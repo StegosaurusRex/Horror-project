@@ -25,6 +25,7 @@ public class MouseLookV : MonoBehaviour
         }
         if (GameManager.GameIsPaused == false)
         {
+            Cursor.visible = false;
             float MouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float MouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -33,6 +34,7 @@ public class MouseLookV : MonoBehaviour
 
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             playerBody.Rotate(Vector3.up * MouseX);
+
         }
     }
 }
