@@ -11,9 +11,9 @@ public class SimpleShoot : MonoBehaviour
     public float impactForce = 30f;
 
     public int maxAmmo = 10;
-    private int currentAmmo;
-    public float reloadTime = 1f;
-    private bool isReloading = false;
+    public static int currentAmmo;
+    public static float reloadTime = 1f;
+    public static bool isReloading = false;
 
     public Camera fpscamera;
     public ParticleSystem muzzleflash;
@@ -23,7 +23,7 @@ public class SimpleShoot : MonoBehaviour
     public AudioClip shot;
     public AudioClip reload;
 
-    [SerializeField] private float nextTimeToFire = 0f;
+    [SerializeField] public static float nextTimeToFire = 0f;
     [Header("Prefab Refrences")]
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
@@ -79,6 +79,10 @@ public class SimpleShoot : MonoBehaviour
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
 
+        }
+        if (DogExample.playerIsDead==true)
+        {
+            gunAnimator.SetBool("PlayerIsDead", true);
         }
     }
 

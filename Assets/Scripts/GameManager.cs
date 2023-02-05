@@ -64,7 +64,10 @@ public class GameManager : MonoBehaviour
 
     }
     public void Restart()
-    { SceneManager.LoadScene(1); }
+    { 
+        SceneManager.LoadScene(1);
+        DogExample.playerIsDead = false;
+    }
     public void QuitGame()
     {
         Application.Quit();

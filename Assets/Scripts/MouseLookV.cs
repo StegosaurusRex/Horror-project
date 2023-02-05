@@ -7,7 +7,7 @@ public class MouseLookV : MonoBehaviour
     public float mouseSensitivity = 100f;
     public Transform playerBody;
     float xRotation = 0f;
-
+    [SerializeField] public Animator deathAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +35,10 @@ public class MouseLookV : MonoBehaviour
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             playerBody.Rotate(Vector3.up * MouseX);
 
+        }
+        if (DogExample.playerIsDead==true)
+        {
+            deathAnim.SetBool("isDeadPlayer", true);
         }
     }
 }

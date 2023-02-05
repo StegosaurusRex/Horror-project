@@ -16,10 +16,12 @@ public class DogExample : MonoBehaviour
     public Transform target;
     private NavMeshAgent enemy;
     public Animator DogAni;
-    private AIStatsKind _AIStats;
+    public AIStatsKind AIStats;
     public AudioSource awakeDogSound;
      public bool isChaseing;
+     public static bool playerIsDead=false;
     GameManager pause;
+    public AudioSource dogBark;
     private void OnDrawGizmos()
     {
  
@@ -36,14 +38,24 @@ public class DogExample : MonoBehaviour
     {
 
         pause = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        
         awakeDogSound = GetComponent<AudioSource>();
         enemy = GetComponent<NavMeshAgent>();
     }
 
-    // Update is called once per frame
+    IEnumerator ExecuteAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        pause.PauseGameOver();
+        playerIsDead = false;
+
+        // Code to execute after the delay
+    }
     void Update()
     {
-        if (_AIStats == AIStatsKind.idle )
+        
+        
+        if (AIStats == AIStatsKind.idle )
         {
             float distance = Vector3.Distance(target.position, transform.position);
             RaycastHit hit;
@@ -52,13 +64,13 @@ public class DogExample : MonoBehaviour
             {
                 DogAni.SetBool("awake", true);
                 Invoke("_SlowWalk",0.5f);
-                _AIStats = AIStatsKind.Active;
+                AIStats = AIStatsKind.Active;
                 enemy.speed = 0.5f;
             }
 
         }
-
-        if (_AIStats == AIStatsKind.Chaseing)
+        
+        if (AIStats == AIStatsKind.Chaseing)
         {
             
             enemy.SetDestination(target.position);
@@ -67,13 +79,37 @@ public class DogExample : MonoBehaviour
             if (true)
             {
                 float distance = Vector3.Distance(target.position, transform.position);
-                if (distance <=stopRadis)
+                if (distance <=stopRadis&&Target.isDead==false)
                 {
-                    pause.PauseGameOver();
-
+                    playerIsDead = true;
+                    StartCoroutine(ExecuteAfterTime(1));
+                    
                 }
             }
         }
+        if (Target.isDead==true)
+        {
+            DogAni.SetBool("isDead", true);
+            dogBark.Stop();
+        }
+        if (GameManager.GameIsPaused == false)
+        {
+            if (AIStats == AIStatsKind.Chaseing && dogBark.isPlaying == false && Target.isDead == false)
+            {
+                dogBark.Play();
+            }
+            else if (AIStats != AIStatsKind.Chaseing && dogBark.isPlaying == true && Target.isDead == true)
+            {
+                dogBark.Stop();
+            }
+        }
+        else
+        {
+            dogBark.Stop();
+        }
+        
+        
+       
     }
  
     void _SlowWalk()
@@ -88,9 +124,10 @@ public class DogExample : MonoBehaviour
 
     void _ChasePlayer()
     {
-        awakeDogSound.Play();
+
+        
         DogAni.SetFloat("speed",1); 
-        _AIStats = AIStatsKind.Chaseing;
+        AIStats = AIStatsKind.Chaseing;
         enemy.speed = MaxSpeed;
 
     }
