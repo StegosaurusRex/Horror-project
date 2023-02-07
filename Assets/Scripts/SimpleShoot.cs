@@ -57,7 +57,7 @@ public class SimpleShoot : MonoBehaviour
 
     void Update()
     {
-        if (isReloading||GameManager.GameIsPaused==true)
+        if (isReloading)
             return;
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
         {
@@ -65,19 +65,11 @@ public class SimpleShoot : MonoBehaviour
             return;
         }
         //If you want a different input, change it here
-        if (Input.GetButtonDown("Fire1"))
-        {
-            //Calls animation on the gun that has the relevant animation events that will fire
-            if (currentAmmo == 0)
-                return;
-            gunAnimator.SetTrigger("Fire");
-
-
-        }
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0&&GameManager.GameIsPaused==false)
+        
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0 &&GameManager.GameIsPaused==false)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
+            gunAnimator.SetTrigger("Fire");
 
         }
         if (DogExample.playerIsDead==true)
@@ -88,11 +80,13 @@ public class SimpleShoot : MonoBehaviour
 
 
     //This function creates the bullet behavior
+    
     void Shoot()
     {
         if (currentAmmo == 0)
             return;
         muzzleflash.Play();
+        
         shootSound.PlayOneShot(shot, 0.7F);
         currentAmmo--;
         RaycastHit hit;
@@ -121,7 +115,7 @@ public class SimpleShoot : MonoBehaviour
 
 
     }
-
+    
     IEnumerator Reload()
     {
         isReloading = true;

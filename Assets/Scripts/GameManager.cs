@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
         pauseMenuUI.SetActive(false);
         pauseMenuUIOptions.SetActive(false);
         Time.timeScale = 1f;
+        Cursor.visible = false;
         GameIsPaused = false;
         
 
