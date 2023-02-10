@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     
     public static bool GameIsPaused=false;
     public GameObject pauseMenuUI;
+    public GameObject crosshairPauseMenuUI;
     public GameObject pauseMenuUIOptions;
     public GameObject pauseMenuUIGameOver;
     public GameObject pauseMenuUIWinGame;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         pauseMenuUIOptions.SetActive(false);
+        crosshairPauseMenuUI.SetActive(true);
         Time.timeScale = 1f;
         Cursor.visible = false;
         GameIsPaused = false;
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
-        
+        crosshairPauseMenuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
     public void PauseGameOver()
     {
         pauseMenuUIGameOver.SetActive(true);
-        
+        crosshairPauseMenuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour
     public void PauseWinGame()
     {
         pauseMenuUIWinGame.SetActive(true);
-        
+        crosshairPauseMenuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
     public void Restart()
     { 
         SceneManager.LoadScene(1);
-        DogExample.playerIsDead = false;
+        Resume();
     }
     public void QuitGame()
     {

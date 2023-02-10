@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MenuControl : MonoBehaviour
 {
-  public void Restart()
+    
+    
+    public void Restart()
     { 
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;

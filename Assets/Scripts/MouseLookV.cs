@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class MouseLookV : MonoBehaviour
 {
+
     public float mouseSensitivity = 100f;
     public Transform playerBody;
     float xRotation = 0f;
-    [SerializeField] public Animator deathAnim;
+    [SerializeField] private Animator deathAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,9 +37,9 @@ public class MouseLookV : MonoBehaviour
             playerBody.Rotate(Vector3.up * MouseX);
 
         }
-        if (DogExample.playerIsDead==true)
+        if (DogExample.playerIsDead == true)
         {
-            deathAnim.SetBool("isDeadPlayer", true);
+            deathAnim.SetBool("IsDeadPlayer", true);
         }
     }
 }

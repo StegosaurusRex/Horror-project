@@ -6,7 +6,7 @@ using UnityEngine;
 public class SimpleShoot : MonoBehaviour
 {
     public float damage = 10f;
-    public float range = 100f;
+    public float range = 10f;
     public float fireRate = 15f;
     public float impactForce = 30f;
 
@@ -72,10 +72,11 @@ public class SimpleShoot : MonoBehaviour
             gunAnimator.SetTrigger("Fire");
 
         }
-        if (DogExample.playerIsDead==true)
+        if (DogExample.playerIsDead == true)
         {
             gunAnimator.SetBool("PlayerIsDead", true);
         }
+
     }
 
 
@@ -109,6 +110,7 @@ public class SimpleShoot : MonoBehaviour
             {
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             }
+            
 
         }
 
@@ -121,11 +123,11 @@ public class SimpleShoot : MonoBehaviour
         isReloading = true;
         Debug.Log("Reloading");
         
-        gunAnimator.SetBool("Reloading", true);
+        gunAnimator.SetTrigger("Reloading");
         
         yield return new WaitForSeconds(reloadTime);
         shootSound.PlayOneShot(reload, 0.7F);
-        gunAnimator.SetBool("Reloading", false);
+        gunAnimator.SetBool("NReloading", true);
         currentAmmo = maxAmmo;
         isReloading = false;
     }

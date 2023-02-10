@@ -36,7 +36,8 @@ public class DogExample : MonoBehaviour
     }
     void Start()
     {
-
+        playerIsDead = false;
+        Target.isDead=false;
         pause = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         
         awakeDogSound = GetComponent<AudioSource>();
@@ -47,7 +48,7 @@ public class DogExample : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         pause.PauseGameOver();
-        playerIsDead = false;
+        
 
         // Code to execute after the delay
     }
@@ -79,18 +80,23 @@ public class DogExample : MonoBehaviour
             if (true)
             {
                 float distance = Vector3.Distance(target.position, transform.position);
-                if (distance <=stopRadis&&Target.isDead==false)
+                RaycastHit hit;
+                Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, 10000);
+                if (distance <= stopRadis )
                 {
                     playerIsDead = true;
-                    StartCoroutine(ExecuteAfterTime(1));
                     
+                    StartCoroutine(ExecuteAfterTime(1f));
+
                 }
             }
         }
         if (Target.isDead==true)
         {
-            DogAni.SetBool("isDead", true);
+            Invoke("DeadDog", 0f);
             dogBark.Stop();
+            Destroy(enemy);
+            
         }
         if (GameManager.GameIsPaused == false)
         {
@@ -103,7 +109,7 @@ public class DogExample : MonoBehaviour
                 dogBark.Stop();
             }
         }
-        else
+        else if (GameManager.GameIsPaused==true)
         {
             dogBark.Stop();
         }
@@ -129,6 +135,17 @@ public class DogExample : MonoBehaviour
         DogAni.SetFloat("speed",1); 
         AIStats = AIStatsKind.Chaseing;
         enemy.speed = MaxSpeed;
+
+    }
+    void DeadDog()
+    {
+
+
+        DogAni.SetFloat("speed", 0);
+        DogAni.SetBool("isDead", true);
+        dogBark.Stop();
+        Destroy(enemy);
+
 
     }
 }
